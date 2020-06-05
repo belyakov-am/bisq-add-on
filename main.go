@@ -1,9 +1,17 @@
 package main
 
-import "fmt"
+import (
+	"bisq-add-on/server"
+	"log"
+	"net/http"
+)
 
 func main() {
-	fmt.Println("test")
-	a := server.Test
-	fmt.Println(a)
+	service := server.InitService()
+
+	http.HandleFunc("/buy", service.BuyHandle)
+	http.HandleFunc("/sell", service.SellHandle)
+	http.HandleFunc("/check-offer", service.CheckOfferHandle)
+
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
